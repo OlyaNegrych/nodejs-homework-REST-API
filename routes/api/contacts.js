@@ -8,6 +8,7 @@ const {
   addContact,
   removeContact,
   updateContact,
+  changeContactStatus,
 } = require("../../models/contacts");
 
 router.get("/", async (req, res, next) => {
@@ -79,19 +80,23 @@ router.put("/:contactId", addContactValidation, async (req, res, next) => {
   res.status(200).json(updatedContact);
 });
 
-// router.patch("/:contactId", patchContactValidation, async (req, res, next) => {
-//   const { name, number } = req.body;
+router.patch("/:contactId/favorite", async (req, res, next) => {
+  const { favorite } = req.body;
 
-//   contacts.forEach((contact) => {
-//     if (name) {
-//       contact.name = name;
-//     }
-//     if (number) {
-//       contact.number = number;
-//     }
-//   });
+  if (!favorite) {
+    res.status(400).json({ message: "missing field favorite" });
+  }
 
-//   res.json({ contacts, status: "success" });
-// });
+  const changedContactStatus = await changeContactStatus(
+    req.params.contactId,
+    favorite
+  );
+
+ if (!changedContactStatus) {
+   res.status(404).json({ message: "Not found" });
+ }
+
+  res.status(200).json({ message: "The status was changed" });
+});
 
 module.exports = router;
