@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { addContactValidation } = require("../../middlewares/validation");
+const { addContactValidation } = require("../../utils/validation/addValidationSchema");
 
 const {
   listContacts,

@@ -36,20 +36,14 @@ const updateContact = async (contactId, body) => {
   const { name, email, phone } = body;
   await Contact.findByIdAndUpdate(contactId, { $set: { name, email, phone } });
 
-  // const updatedContact = await Contact.findById(contactId);
-  // return updatedContact;
-
    return { message: "The contact was updated" };
 };
 
 const changeContactStatus = async (contactId, status) => {
   await Contact.findByIdAndUpdate(contactId, { $set: { favorite: status } });
-  console.log(status);
-  // const changedContact = await Contact.findById(contactId);
-  // return changedContact;
+
   return { message: "The status was changed" };
 };
-// changeContactStatus();
 
 module.exports = {
   listContacts,
