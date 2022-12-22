@@ -10,8 +10,8 @@ const start = async () => {
    process.exit(1);
  }
 
-  app.listen(3000, () => {
-    console.log("Server running. Use our API on port: 3000");
+  app.listen(process.env.PORT, () => {
+    console.log(`Server running. Use our API on port: ${process.env.PORT}`);
   });
 };
 
