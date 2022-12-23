@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   addContactValidation,
   updateContactValidation,
+  changeStatusValidation,
 } = require("../../middlewares/validation");
 
 const {
@@ -47,11 +48,6 @@ router.delete("/:contactId", async (req, res, next) => {
 });
 
 router.put("/:contactId", updateContactValidation, async (req, res, next) => {
-  const { name, email, phone } = req.body;
-
-  if (!req.body) {
-    res.status(400).json({ message: "missing fields" });
-  }
 
   const updatedContact = await updateContact(req.params.contactId, req.body);
 
@@ -62,12 +58,8 @@ router.put("/:contactId", updateContactValidation, async (req, res, next) => {
   res.status(200).json(updatedContact);
 });
 
-router.patch("/:contactId/favorite", async (req, res, next) => {
+router.patch("/:contactId/favorite", changeStatusValidation, async (req, res, next) => {
   const { favorite } = req.body;
-
-  if (!favorite) {
-    res.status(400).json({ message: "missing field favorite" });
-  }
 
   const changedContactStatus = await changeContactStatus(
     req.params.contactId,
