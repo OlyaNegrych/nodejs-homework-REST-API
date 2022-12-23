@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const { addContactValidation } = require("../../middlewares/validation");
+const {
+  addContactValidation,
+  updateContactValidation,
+  changeStatusValidation,
+} = require("../../middlewares/validation");
 
 const {
   listContacts,
@@ -8,6 +12,7 @@ const {
   addContact,
   removeContact,
   updateContact,
+  changeContactStatus,
 } = require("../../models/contacts");
 
 router.get("/", async (req, res, next) => {
@@ -16,12 +21,7 @@ router.get("/", async (req, res, next) => {
 });
 
 router.get("/:contactId", async (req, res, next) => {
-  if (!req.params.contactId) {
-    return res.status(404).json({
-      message: "Not found",
-    });
-  }
-
+ 
   const contactById = await getContactById(req.params.contactId);
 
   res.status(200).json(contactById);
@@ -29,14 +29,6 @@ router.get("/:contactId", async (req, res, next) => {
 
 router.post("/", addContactValidation, async (req, res, next) => {
   const { name, email, phone } = req.body;
-
-  if (!name) {
-    res.status(400).json({ message: `missing required ${name} field` });
-  } else if (!email) {
-    res.status(400).json({ message: `missing required ${email} field` });
-  } else if (!phone) {
-    res.status(400).json({ message: `missing required ${phone} field` });
-  }
 
   const newContact = await addContact({ name, email, phone });
 
@@ -55,20 +47,7 @@ router.delete("/:contactId", async (req, res, next) => {
   res.status(200).json({ message: "The contact was deleted." });
 });
 
-router.put("/:contactId", addContactValidation, async (req, res, next) => {
-  const { name, email, phone } = req.body;
-
-  if (!req.body) {
-    res.status(400).json({ message: "missing fields" });
-  }
-
-  if (!name) {
-    res.status(400).json({ message: `missing required ${name} field` });
-  } else if (!email) {
-    res.status(400).json({ message: `missing required ${email} field` });
-  } else if (!phone) {
-    res.status(400).json({ message: `missing required ${phone} field` });
-  }
+router.put("/:contactId", updateContactValidation, async (req, res, next) => {
 
   const updatedContact = await updateContact(req.params.contactId, req.body);
 
@@ -79,19 +58,19 @@ router.put("/:contactId", addContactValidation, async (req, res, next) => {
   res.status(200).json(updatedContact);
 });
 
-// router.patch("/:contactId", patchContactValidation, async (req, res, next) => {
-//   const { name, number } = req.body;
+router.patch("/:contactId/favorite", changeStatusValidation, async (req, res, next) => {
+  const { favorite } = req.body;
 
-//   contacts.forEach((contact) => {
-//     if (name) {
-//       contact.name = name;
-//     }
-//     if (number) {
-//       contact.number = number;
-//     }
-//   });
+  const changedContactStatus = await changeContactStatus(
+    req.params.contactId,
+    favorite
+  );
 
-//   res.json({ contacts, status: "success" });
-// });
+ if (!changedContactStatus) {
+   res.status(404).json({ message: "Not found" });
+ }
+
+  res.status(200).json({ message: "The status was changed" });
+});
 
 module.exports = router;
