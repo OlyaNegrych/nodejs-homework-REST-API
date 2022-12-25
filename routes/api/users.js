@@ -6,9 +6,13 @@ const {
 } = require("../../middlewares/validation");
 
 const checkJWT = require('../../middlewares/authorization');
-const { registerController, loginController, logoutController } = require("../../controllers");
+const {
+  registrationController,
+  loginController,
+  logoutController,
+} = require("../../controllers");
 
-router.post("/register", registrationValidation, registerController);
+router.post("/registation", registrationValidation, registrationController);
 router.post("/login", loginValidation, loginController);
 router.get("/logout", checkJWT, logoutController);
 

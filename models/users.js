@@ -1,26 +1,26 @@
 const { User } = require("../db/userModel");
 
-const registerUser = async ({ email, password }) => {
-  // const contact = new Contact({ name, email, phone });
-  // await contact.save();
-  // return contact;
+const registrationUser = async ({ email, password }) => {
+  const user = new User({ email, password });
+  await user.save();
+  return user;
 };
 
-const loginUser = async (contactId) => {
-  // const contact = await Contact.findById(contactId);
+const loginUser = async (userId) => {
+  const user = await User.findById(userId);
 
-  // if (!contactId) {
-  //   return { message: "Not found" };
-  // }
+  if (!userId) {
+    return { message: "Not found" };
+  }
 
-  // return contact;
+  return user;
 };
 
 
-const logoutUser = async (contactId) => {
-  // const contact = await Contact.findByIdAndRemove(contactId);
+const logoutUser = async (userId) => {
+  // const user = await Contact.findByIdAndRemove(userId);
 
-  // if (!contactId) {
+  // if (!userId) {
   //   return { message: "Not found" };
   // }
 
@@ -28,7 +28,7 @@ const logoutUser = async (contactId) => {
 };
 
 module.exports = {
-  registerUser,
+  registrationUser,
   loginUser,
   logoutUser,
 };
