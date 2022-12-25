@@ -3,7 +3,7 @@ const httpError = require("../utils/httpError");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const register = async (req, res, next) => {
+const registerController = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -27,7 +27,7 @@ const register = async (req, res, next) => {
   }
 };
 
-const login = async (req, res, next) => {
+const loginController = async (req, res, next) => {
     try {
       const { email, password } = req.body;
 
@@ -53,7 +53,7 @@ const login = async (req, res, next) => {
   }
 };
 
-const logout = async (req, res, next) => {
+const logoutController = async (req, res, next) => {
     try {
         const { user } = req;
         await User.findOneAndUpdate({_id: user.id}, {token: null})
@@ -66,7 +66,7 @@ const logout = async (req, res, next) => {
 
 
 module.exports = {
-  register,
-  login,
-  logout,
+  registerController,
+  loginController,
+  logoutController,
 };

@@ -6,71 +6,105 @@ const {
   changeStatusValidation,
 } = require("../../middlewares/validation");
 
+// const {
+//   listContacts,
+//   getContactById,
+//   addContact,
+//   removeContact,
+//   updateContact,
+//   changeContactStatus,
+// } = require("../../models/contacts");
+
 const {
-  listContacts,
-  getContactById,
-  addContact,
-  removeContact,
-  updateContact,
-  changeContactStatus,
-} = require("../../models/contacts");
+  getAllContactsController,
+  getContactByIdController,
+  addContactController,
+  deleteContactController,
+  updateContactController,
+  changeStatusContactController
+} = require('../../controllers/contactsControllers');
 
-router.get("/", async (req, res, next) => {
-  const contactList = await listContacts();
-  res.status(200).json(contactList);
-});
+router.get("/", getAllContactsController);
 
-router.get("/:contactId", async (req, res, next) => {
- 
-  const contactById = await getContactById(req.params.contactId);
+router.get("/:contactId", getContactByIdController);
 
-  res.status(200).json(contactById);
-});
+router.post("/", addContactValidation, addContactController);
 
-router.post("/", addContactValidation, async (req, res, next) => {
-  const { name, email, phone } = req.body;
+router.delete("/:contactId", deleteContactController);
 
-  const newContact = await addContact({ name, email, phone });
+router.put("/:contactId", updateContactValidation, updateContactController);
 
-  res.status(201).json(newContact);
-});
+router.patch(
+  "/:contactId/favorite",
+  changeStatusValidation,
+  changeStatusContactController
+);
 
-router.delete("/:contactId", async (req, res, next) => {
-  if (!req.params.contactId) {
-    return res.status(404).json({
-      message: "Not found",
-    });
-  }
 
-  await removeContact(req.params.contactId);
+//========================================================
 
-  res.status(200).json({ message: "The contact was deleted." });
-});
 
-router.put("/:contactId", updateContactValidation, async (req, res, next) => {
+// router.get("/", async (req, res, next) => {
+//   const contactList = await listContacts();
+//   res.status(200).json(contactList);
+// });
 
-  const updatedContact = await updateContact(req.params.contactId, req.body);
+// router.get("/:contactId", async (req, res, next) => {
+//   const contactById = await getContactById(req.params.contactId);
 
-  if (!updatedContact) {
-    res.status(404).json({ message: "Not found" });
-  }
+//   res.status(200).json(contactById);
+// });
 
-  res.status(200).json(updatedContact);
-});
+// router.post("/", addContactValidation, async (req, res, next) => {
+//   const { name, email, phone } = req.body;
 
-router.patch("/:contactId/favorite", changeStatusValidation, async (req, res, next) => {
-  const { favorite } = req.body;
+//   const newContact = await addContact({ name, email, phone });
 
-  const changedContactStatus = await changeContactStatus(
-    req.params.contactId,
-    favorite
-  );
+//   res.status(201).json(newContact);
+// });
 
- if (!changedContactStatus) {
-   res.status(404).json({ message: "Not found" });
- }
+// router.delete("/:contactId", async (req, res, next) => {
+//   if (!req.params.contactId) {
+//     return res.status(404).json({
+//       message: "Not found",
+//     });
+//   }
 
-  res.status(200).json({ message: "The status was changed" });
-});
+//   await removeContact(req.params.contactId);
+
+//   res.status(200).json({ message: "The contact was deleted." });
+// });
+
+// router.put("/:contactId", updateContactValidation, async (req, res, next) => {
+//   const updatedContact = await updateContact(req.params.contactId, req.body);
+
+//   if (!updatedContact) {
+//     res.status(404).json({ message: "Not found" });
+//   }
+
+//   res.status(200).json(updatedContact);
+// });
+
+// router.patch(
+//   "/:contactId/favorite",
+//   changeStatusValidation,
+//   async (req, res, next) => {
+//     const { favorite } = req.body;
+
+//     const changedContactStatus = await changeContactStatus(
+//       req.params.contactId,
+//       favorite
+//     );
+
+//     if (!changedContactStatus) {
+//       res.status(404).json({ message: "Not found" });
+//     }
+
+//     res.status(200).json({ message: "The status was changed" });
+//   }
+// );
+
+
+
 
 module.exports = router;
