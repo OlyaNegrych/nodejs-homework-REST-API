@@ -2,7 +2,6 @@ const User = require("../models/users");
 const httpError = require("../utils/httpError");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const e = require("express");
 
 const register = async (req, res, next) => {
   try {
@@ -55,9 +54,16 @@ const login = async (req, res, next) => {
 };
 
 const logout = async (req, res, next) => {
-  try {
-  } catch (error) {}
+    try {
+        const { user } = req;
+        await User.findOneAndUpdate({_id: user.id}, {token: null})
+        res.status(204)
+
+    } catch (error) {
+    next(error)    
+  }
 };
+
 
 module.exports = {
   register,

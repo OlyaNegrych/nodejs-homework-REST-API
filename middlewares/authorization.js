@@ -14,7 +14,7 @@ const checkJWT = async (req, res, next) => {
         
         const user = await User.findOne({ _id: payload.id });
 
-        if (!user) {
+        if (!user || !token) {
             throw new httpError(401, "Unautorized");
         }
 

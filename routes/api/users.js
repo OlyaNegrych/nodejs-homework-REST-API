@@ -5,7 +5,7 @@ const router = express.Router();
 //   loginValidation,
 // } = require("../../middlewares/validation");
 
-const checkJWT = require('../../middlewares/checkJWT');
+const checkJWT = require('../../middlewares/authorization');
 const { register, login, logout } = require("../../controllers");
 
 router.post("/register", register);
