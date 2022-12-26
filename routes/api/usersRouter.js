@@ -12,7 +12,7 @@ const {
   logoutController,
 } = require("../../controllers");
 
-router.post("/registation", registrationValidation, registrationController);
+router.post("/register", registrationValidation, registrationController);
 router.post("/login", loginValidation, loginController);
 router.get("/logout", checkJWT, logoutController);
 

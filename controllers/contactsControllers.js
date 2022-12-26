@@ -7,7 +7,7 @@ const {
   changeContactStatus,
 } = require("../models/contacts");
 
-const getAllContactsController = async (req, res, next) => {
+const getContactsController = async (req, res, next) => {
   const contactList = await listContacts();
   res.status(200).json(contactList);
 };
@@ -64,7 +64,7 @@ const changeStatusContactController = async (req, res, next) => {
 };
 
 module.exports = {
-  getAllContactsController,
+  getContactsController,
   getContactByIdController,
   addContactController,
   deleteContactController,

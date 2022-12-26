@@ -16,7 +16,7 @@ const {
 // } = require("../../models/contacts");
 
 const {
-  getAllContactsController,
+  getContactsController,
   getContactByIdController,
   addContactController,
   deleteContactController,
@@ -24,7 +24,7 @@ const {
   changeStatusContactController
 } = require('../../controllers/contactsControllers');
 
-router.get("/", getAllContactsController);
+router.get("/", getContactsController);
 
 router.get("/:contactId", getContactByIdController);
 
