@@ -1,7 +1,4 @@
-// const { User } = require("../db/userModel");
-// const httpError = require("../utils/httpError");
-// const bcrypt = require("bcrypt");
-// const jwt = require("jsonwebtoken");
+
 const { registerUser, loginUser, logoutUser } = require("../models/users");
 
 const registrationController = async (req, res, next) => {

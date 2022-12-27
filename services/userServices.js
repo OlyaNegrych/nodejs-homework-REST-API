@@ -1,7 +1,7 @@
-const httpError = require("../utils/httpError");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { User } = require("../db/userModel");
+const httpError = require("../helpers/httpError");
+const { User } = require("../models/userModel");
 
 const registerUser = async ({ email, password }) => {
   const candidate = await User.findOne({ email });
@@ -12,7 +12,7 @@ const registerUser = async ({ email, password }) => {
 
   const salt = bcrypt.genSalt(10);
   const hashedPassword = bcrypt.hash(password, salt);
-    // const hashedPassword = await bcrypt.hash(password, salt);
+  // const hashedPassword = await bcrypt.hash(password, salt);
 
   const user = new User({ email, hashedPassword });
 
@@ -23,7 +23,7 @@ const registerUser = async ({ email, password }) => {
 const loginUser = async ({ email, password }) => {
   const candidate = await User.findOne({ email });
   const isPasswordCorrect = bcrypt.compare(password, candidate.password);
-    // const isPasswordCorrect = await bcrypt.compare(password, candidate.password);
+  // const isPasswordCorrect = await bcrypt.compare(password, candidate.password);
 
   if (!candidate || !isPasswordCorrect) {
     throw new httpError(401, "Wrong email or password");
@@ -31,7 +31,7 @@ const loginUser = async ({ email, password }) => {
 
   const token = jwt.sign(
     { _id: candidate._id, email: candidate.email },
-    process.env.JWT_SECRET_KEY,
+    process.env.JWT_SECRET_KEY
     // { expiresIn: "1h" }
   );
 

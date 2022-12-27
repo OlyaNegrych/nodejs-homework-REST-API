@@ -1,19 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const {asyncWrapper} = require("../../helpers/apiHelper");
 const {
   addContactValidation,
   updateContactValidation,
   changeStatusValidation,
 } = require("../../middlewares/validation");
-
-// const {
-//   listContacts,
-//   getContactById,
-//   addContact,
-//   removeContact,
-//   updateContact,
-//   changeContactStatus,
-// } = require("../../models/contacts");
 
 const {
   getContactsController,
@@ -21,28 +13,30 @@ const {
   addContactController,
   deleteContactController,
   updateContactController,
-  changeStatusContactController
-} = require('../../controllers/contactsControllers');
+  changeStatusContactController,
+} = require("../../controllers/contactsControllers");
 
-router.get("/", getContactsController);
+router.get("/", asyncWrapper(getContactsController));
 
-router.get("/:contactId", getContactByIdController);
+router.get("/:contactId", asyncWrapper(getContactByIdController));
 
-router.post("/", addContactValidation, addContactController);
+router.post("/", addContactValidation, asyncWrapper(addContactController));
 
-router.delete("/:contactId", deleteContactController);
+router.delete("/:contactId", asyncWrapper(deleteContactController));
 
-router.put("/:contactId", updateContactValidation, updateContactController);
+router.put(
+  "/:contactId",
+  updateContactValidation,
+  asyncWrapper(updateContactController)
+);
 
 router.patch(
   "/:contactId/favorite",
   changeStatusValidation,
-  changeStatusContactController
+  asyncWrapper(changeStatusContactController)
 );
 
-
 //========================================================
-
 
 // router.get("/", async (req, res, next) => {
 //   const contactList = await listContacts();
@@ -103,8 +97,5 @@ router.patch(
 //     res.status(200).json({ message: "The status was changed" });
 //   }
 // );
-
-
-
 
 module.exports = router;
