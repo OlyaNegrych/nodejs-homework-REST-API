@@ -57,10 +57,12 @@ const getCurrentUser = async () => {
    throw new httpError(401, "Unautorized");
  }
 
+const currentUser = { email: user.email, suscription: user.subscription };
+  
  req.user = user;
  req.token = token;
 
-  return user;
+  return currentUser;
 };
 
 module.exports = {
