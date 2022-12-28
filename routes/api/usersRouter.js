@@ -5,6 +5,7 @@ const checkJWT = require("../../middlewares/authorization");
 const {
   registrationValidation,
   loginValidation,
+  changeSubscriptionValidation,
 } = require("../../middlewares/validation");
 
 const {
@@ -12,6 +13,7 @@ const {
   loginController,
   logoutController,
   getCurrentUserController,
+  changeSubscriptionController,
 } = require("../../controllers/usersControllers");
 
 router.post(
@@ -21,7 +23,11 @@ router.post(
 );
 router.post("/login", loginValidation, asyncWrapper(loginController));
 router.get("/logout", checkJWT, asyncWrapper(logoutController));
-
 router.get("/current", checkJWT, asyncWrapper(getCurrentUserController));
+router.patch(
+  "/current",
+  changeSubscriptionValidation,
+  asyncWrapper(changeSubscriptionController)
+);
 
 module.exports = router;

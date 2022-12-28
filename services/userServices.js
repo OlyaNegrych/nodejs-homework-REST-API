@@ -65,9 +65,19 @@ const currentUser = { email: user.email, suscription: user.subscription };
   return currentUser;
 };
 
+const changeUserSubscription = async (contactId, subscription, owner) => {
+  await User.findOneAndUpdate(
+    { _id: contactId, owner },
+    { $set: { subscription } }
+  );
+
+  return { message: `User subscription type was changed on ${subscription}` };
+};
+
 module.exports = {
   registerUser,
   loginUser,
   logoutUser,
   getCurrentUser,
+  changeUserSubscription,
 };
