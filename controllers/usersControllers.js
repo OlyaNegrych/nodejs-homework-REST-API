@@ -1,10 +1,10 @@
 
-const { registerUser, loginUser, logoutUser } = require("../models/users");
+const { registerUser, loginUser, logoutUser } = require("../services/userServices");
 
 const registrationController = async (req, res, next) => {
   const { email, password } = req.body;
 
-  const user = await registerUser({email, password});
+  const user = await registerUser(email, password);
 
   res.status(200).json({ user });
 };
@@ -12,20 +12,16 @@ const registrationController = async (req, res, next) => {
 const loginController = async (req, res, next) => {
   const { email, password } = req.body;
 
-  const token = await loginUser({ email, password });
+  const token = await loginUser({email, password});
 
   res.status(200).json({ token });
 };
 
 const logoutController = async (req, res, next) => {
-  // try {
-  //   const { user } = req;
-  //   await User.findOneAndUpdate({ _id: user.id }, { token: null });
-  //   res.status(204);
-  // } catch (error) {
-  //   next(error);
-  // }
-  // res.status(200).json({ token });
+  const { user } = req;
+  await logoutUser(user);
+ 
+  res.status(204);
 };
 
 module.exports = {

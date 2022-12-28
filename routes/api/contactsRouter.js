@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const {asyncWrapper} = require("../../helpers/apiHelper");
+const { asyncWrapper } = require("../../helpers/apiHelper");
+const checkJWT = require("../../middlewares/authorization");
 const {
   addContactValidation,
   updateContactValidation,
@@ -15,6 +16,8 @@ const {
   updateContactController,
   changeStatusContactController,
 } = require("../../controllers/contactsControllers");
+
+router.use(checkJWT);
 
 router.get("/", asyncWrapper(getContactsController));
 

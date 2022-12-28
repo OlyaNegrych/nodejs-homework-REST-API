@@ -1,19 +1,24 @@
 const express = require("express");
 const router = express.Router();
+const { asyncWrapper } = require("../../helpers/apiHelper");
+const checkJWT = require("../../middlewares/authorization");
 const {
   registrationValidation,
   loginValidation,
 } = require("../../middlewares/validation");
 
-const checkJWT = require('../../middlewares/authorization');
 const {
   registrationController,
   loginController,
   logoutController,
-} = require("../../controllers");
+} = require("../../controllers/usersControllers");
 
-router.post("/register", registrationValidation, registrationController);
-router.post("/login", loginValidation, loginController);
-router.get("/logout", checkJWT, logoutController);
+router.post(
+  "/register",
+  registrationValidation,
+  asyncWrapper(registrationController)
+);
+router.post("/login", loginValidation, asyncWrapper(loginController));
+router.get("/logout", checkJWT, asyncWrapper(logoutController));
 
 module.exports = router;
