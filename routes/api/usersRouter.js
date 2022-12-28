@@ -11,6 +11,7 @@ const {
   registrationController,
   loginController,
   logoutController,
+  getCurrentUserController,
 } = require("../../controllers/usersControllers");
 
 router.post(
@@ -20,5 +21,7 @@ router.post(
 );
 router.post("/login", loginValidation, asyncWrapper(loginController));
 router.get("/logout", checkJWT, asyncWrapper(logoutController));
+
+router.get("/current", checkJWT, asyncWrapper(getCurrentUserController));
 
 module.exports = router;

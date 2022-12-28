@@ -43,8 +43,29 @@ const logoutUser = async (user) => {
   await User.findOneAndUpdate({ _id: user.id }, {token: null});
 };
 
+const getCurrentUser = async () => {
+ const token = req.headers.authorization?.split(" ")[1];
+
+ if (!token) {
+   throw new httpError(401, "Unautorized");
+ }
+
+ const payload = jwt.verify(token, process.env.JWT_SECRET_KEY);
+ const user = await User.findOne({ _id: payload.id });
+
+ if (!user || !token) {
+   throw new httpError(401, "Unautorized");
+ }
+
+ req.user = user;
+ req.token = token;
+
+  return user;
+};
+
 module.exports = {
   registerUser,
   loginUser,
   logoutUser,
+  getCurrentUser,
 };
