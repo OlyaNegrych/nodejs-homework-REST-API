@@ -11,7 +11,7 @@ const checkJWT = async (req, res, next) => {
       throw new httpError(401, "Unautorized");
     }
 
-    const user = jwt.decode(token, process.env.JWT_SECRET_KEY);
+    const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
     // const payload = jwt.verify(token, process.env.JWT_SECRET_KEY);
     // const user = await User.findOne({ _id: payload.id });
 
