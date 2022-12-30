@@ -39,7 +39,7 @@ const loginUser = async ({ email, password }) => {
   return token;
 };
 
-const logoutUser = async (user) => {
+const logoutUser = async ({user}) => {
   await User.findOneAndUpdate({ _id: user._id }, { $set: { token: null } });
 };
 
@@ -60,26 +60,22 @@ const changeUserSubscription = async (token, subscription) => {
   const payload = jwt.verify(token, process.env.JWT_SECRET_KEY);
   const user = await User.findById({ _id: payload._id });
 
-  if (
-    subscription != "starter" ||
-    subscription != "pro" ||
-    subscription != "business"
-  ) {
-    throw new httpError(
-      400,
-      "There is no such type of subscription, please choose 'starter', 'pro' or 'business'."
-    );
+  // if (
+  //   subscription != "starter" ||
+  //   subscription != "pro" ||
+  //   subscription != "business"
+  // ) {
+  //   throw new httpError(
+  //     400,
+  //     "There is no such type of subscription, please choose 'starter', 'pro' or 'business'."
+  //   );
+  // }
+
+  if (!user || !token) {
+    throw new httpError(401, "Unautorized");
   }
 
-    if (!user || !token) {
-
-      throw new httpError(401, "Unautorized");
-    }
-
-  await User.findOneAndUpdate(
-    { _id: user._id },
-    { $set: { subscription } }
-  );
+  await User.findOneAndUpdate({ _id: user._id }, { $set: { subscription } });
 
   return { message: `User subscription type was changed on ${subscription}` };
 };

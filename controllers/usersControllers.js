@@ -24,6 +24,11 @@ const loginController = async (req, res, next) => {
 
 const logoutController = async (req, res, next) => {
   const { user } = req;
+
+   if (!user) {
+     throw new httpError(401, "Unautorized");
+  }
+  
   await logoutUser({ user });
 
   // res.status(204);
@@ -41,7 +46,7 @@ const getCurrentUserController = async (req, res, next) => {
   res.status(200).json({ currentUser });
 };
 
-const changeSubscriptionController = async (req, res, next) => {
+const changeSubscriptionController = async (req, res, next) => { 
   const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
