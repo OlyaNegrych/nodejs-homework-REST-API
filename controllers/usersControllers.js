@@ -23,16 +23,12 @@ const loginController = async (req, res, next) => {
 };
 
 const logoutController = async (req, res, next) => {
-  const { user } = req;
-
-   if (!user) {
-     throw new httpError(401, "Unautorized");
-  }
+  const { _id } = req.user;
   
-  await logoutUser({ user });
+  await logoutUser({ _id });
 
-  // res.status(204);
-  res.status(200).json({ message: "User was logged out." });
+  res.status(204).json();
+  // res.status(200).json({ message: "User was logged out." });
 };
 
 const getCurrentUserController = async (req, res, next) => {
@@ -66,7 +62,7 @@ const changeSubscriptionController = async (req, res, next) => {
 
   res
     .status(200)
-    .json({ message: `User subscription type was changed on ${subscription}` });
+    .json({ message: `User subscription type was changed to ${subscription}` });
 };
 
 module.exports = {

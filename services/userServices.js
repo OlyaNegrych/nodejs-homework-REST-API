@@ -34,13 +34,15 @@ const loginUser = async ({ email, password }) => {
     // { expiresIn: "1h" }
   );
 
-  // await User.findOneAndUpdate({ email }, { token });
+  await User.findOneAndUpdate({ email }, { token });
 
   return token;
 };
 
-const logoutUser = async ({user}) => {
-  await User.findOneAndUpdate({ _id: user._id }, { $set: { token: null } });
+const logoutUser = async ({ _id }) => {
+  await User.findByIdAndUpdate({ _id }, { $set: { token: null } });
+
+  return { message: "The user was logged out" };
 };
 
 const getCurrentUser = async (token) => {
@@ -59,17 +61,6 @@ const getCurrentUser = async (token) => {
 const changeUserSubscription = async (token, subscription) => {
   const payload = jwt.verify(token, process.env.JWT_SECRET_KEY);
   const user = await User.findById({ _id: payload._id });
-
-  // if (
-  //   subscription != "starter" ||
-  //   subscription != "pro" ||
-  //   subscription != "business"
-  // ) {
-  //   throw new httpError(
-  //     400,
-  //     "There is no such type of subscription, please choose 'starter', 'pro' or 'business'."
-  //   );
-  // }
 
   if (!user || !token) {
     throw new httpError(401, "Unautorized");

@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const User = require("../services/userServices");
+// const User = require("../services/userServices");
 const httpError = require("../helpers/httpError");
 
 const checkJWT = async (req, res, next) => {
@@ -27,7 +27,5 @@ const checkJWT = async (req, res, next) => {
     next(error);
   }
 };
-
-
 
 module.exports = checkJWT;

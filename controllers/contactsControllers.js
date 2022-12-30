@@ -9,6 +9,12 @@ const {
 
 const getContactsController = async (req, res, next) => {
   const { _id: owner } = req.user;
+  // let { page = 1, limit = 10 } = req.query;
+  // limit = limit > 10 ? 10 : limit;
+  // const skip = (page - 1) * limit;
+
+  // const contactList = await listContacts(owner, skip, limit);
+
   const contactList = await listContacts(owner);
 
   res.status(200).json(contactList);

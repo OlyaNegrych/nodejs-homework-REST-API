@@ -1,14 +1,21 @@
-
 const { Contact } = require("../models/contactModel");
 
 const listContacts = async (owner) => {
+  // const listContacts = async (owner, skip, limit) => {
 
+  // const contacts = await Contact.find({ owner }, {_v: 0}, {skip, limit: +limit}).populate('owner', '_id email');
   const contacts = await Contact.find({ owner });
+  // const contacts = await Contact.find(
+  //   { owner },
+  //   { _v: 0 },
+  // ).populate("owner", "_id email")
+  //  sort({favorite: true}).;
+
   return { contacts };
 };
 
 const getContactById = async (contactId, owner) => {
-  const contact = await Contact.findOne({_id: contactId, owner});
+  const contact = await Contact.findOne({ _id: contactId, owner });
 
   if (!contactId) {
     return { message: "Not found" };
@@ -24,7 +31,7 @@ const addContact = async ({ name, email, phone }, owner) => {
 };
 
 const removeContact = async (contactId, owner) => {
-  await Contact.findOneAndRemove({_id: contactId, owner});
+  await Contact.findOneAndRemove({ _id: contactId, owner });
 
   if (!contactId) {
     return { message: "Not found" };
@@ -35,9 +42,12 @@ const removeContact = async (contactId, owner) => {
 
 const updateContact = async (contactId, body, owner) => {
   const { name, email, phone } = body;
-  await Contact.findOneAndUpdate({_id: contactId, owner}, { $set: { name, email, phone } });
+  await Contact.findOneAndUpdate(
+    { _id: contactId, owner },
+    { $set: { name, email, phone } }
+  );
 
-   return { message: "The contact was updated" };
+  return { message: "The contact was updated" };
 };
 
 const changeContactStatus = async (contactId, status, owner) => {
