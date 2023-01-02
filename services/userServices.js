@@ -30,11 +30,11 @@ const loginUser = async ({ email, password }) => {
 
   const token = jwt.sign(
     { _id: candidate._id, email: candidate.email },
-    process.env.JWT_SECRET_KEY
-    // { expiresIn: "1h" }
+    process.env.JWT_SECRET_KEY,
+    { expiresIn: "1d" }
   );
 
-  await User.findOneAndUpdate({ email }, { token });
+  await User.findByIdAndUpdate(candidate._id , { $set: { token } });
 
   return token;
 };

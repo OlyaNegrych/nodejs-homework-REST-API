@@ -1,21 +1,23 @@
 const { Contact } = require("../models/contactModel");
 
-const listContacts = async (owner) => {
-  // const listContacts = async (owner, skip, limit) => {
+// const listContacts = async (owner) => {
+const listContacts = async (owner, skip, limit, favorite) => {
+  const contacts = await Contact.find({ owner, favorite })
+    .select({ __v: 0 })
+    .skip(skip)
+    .limit(limit);
 
-  // const contacts = await Contact.find({ owner }, {_v: 0}, {skip, limit: +limit}).populate('owner', '_id email');
-  const contacts = await Contact.find({ owner });
   // const contacts = await Contact.find(
   //   { owner },
   //   { _v: 0 },
-  // ).populate("owner", "_id email")
-  //  sort({favorite: true}).;
+  //   { skip, limit: +limit }
+  // );
 
   return { contacts };
 };
 
 const getContactById = async (contactId, owner) => {
-  const contact = await Contact.findOne({ _id: contactId, owner });
+  const contact = await Contact.findOne({ _id: contactId, owner }).select({_v: 0});
 
   if (!contactId) {
     return { message: "Not found" };

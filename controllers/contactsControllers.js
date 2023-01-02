@@ -9,13 +9,11 @@ const {
 
 const getContactsController = async (req, res, next) => {
   const { _id: owner } = req.user;
-  // let { page = 1, limit = 10 } = req.query;
-  // limit = limit > 10 ? 10 : limit;
-  // const skip = (page - 1) * limit;
+  let { page = 1, limit = 10, favorite=null } = req.query;
+  limit = limit > 10 ? 10 : limit;
+  const skip = (page - 1) * limit;
 
-  // const contactList = await listContacts(owner, skip, limit);
-
-  const contactList = await listContacts(owner);
+  const contactList = await listContacts(owner, skip, limit, favorite);
 
   res.status(200).json(contactList);
 };
@@ -25,7 +23,6 @@ const getContactByIdController = async (req, res, next) => {
   const { contactId } = req.params;
 
   const contactById = await getContactById(contactId, owner);
-  // const contactById = await getContactById(req.params.contactId);
 
   res.status(200).json(contactById);
 };
