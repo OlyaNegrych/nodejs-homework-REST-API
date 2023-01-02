@@ -1,6 +1,15 @@
 const { Contact } = require("../models/contactModel");
 
 const listContacts = async (owner, skip, limit, favorite) => {
+
+  if (!favorite) {
+     const contacts = await Contact.find({ owner })
+       .select({ __v: 0 })
+       .skip(skip)
+      .limit(limit);
+    return contacts;
+  }
+
   const contacts = await Contact.find({ owner, favorite })
     .select({ __v: 0 })
     .skip(skip)
