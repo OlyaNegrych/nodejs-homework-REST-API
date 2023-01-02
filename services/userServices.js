@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const httpError = require("../helpers/httpError");
+const HttpError = require("../helpers/httpError");
 const { User } = require("../models/userModel");
 
 const registerUser = async (email, password) => {
@@ -25,7 +25,7 @@ const loginUser = async ({ email, password }) => {
   const isPasswordCorrect = await bcrypt.compare(password, candidate.password);
 
   if (!candidate || !isPasswordCorrect) {
-    throw new httpError(401, "Wrong email or password");
+    throw new HttpError(401, "Wrong email or password");
   }
 
   const token = jwt.sign(
@@ -50,7 +50,7 @@ const getCurrentUser = async (token) => {
   const user = await User.findById({ _id: payload._id });
 
   if (!user || !token) {
-    throw new httpError(401, "Unautorized");
+    throw new HttpError(401, "Unautorized");
   }
 
   const currentUser = { email: user.email, subscription: user.subscription };
@@ -63,7 +63,7 @@ const changeUserSubscription = async (token, subscription) => {
   const user = await User.findById({ _id: payload._id });
 
   if (!user || !token) {
-    throw new httpError(401, "Unautorized");
+    throw new HttpError(401, "Unautorized");
   }
 
   await User.findOneAndUpdate({ _id: user._id }, { $set: { subscription } });

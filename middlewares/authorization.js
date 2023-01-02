@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 // const User = require("../services/userServices");
-const httpError = require("../helpers/httpError");
+const HttpError = require("../helpers/httpError");
 
 const checkJWT = async (req, res, next) => {
   try {
@@ -8,7 +8,7 @@ const checkJWT = async (req, res, next) => {
     // const [tokenType, token] = req.headers['authorization'].split(' ');
 
     if (!token) {
-      throw new httpError(401, "Unautorized");
+      throw new HttpError(401, "Unautorized");
     }
 
     const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
@@ -16,7 +16,7 @@ const checkJWT = async (req, res, next) => {
     // const user = await User.findOne({ _id: payload.id });
 
     if (!user || !token) {
-      throw new httpError(401, "Unautorized");
+      throw new HttpError(401, "Unautorized");
     }
 
     req.user = user;

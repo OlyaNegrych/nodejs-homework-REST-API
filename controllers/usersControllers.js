@@ -28,7 +28,6 @@ const logoutController = async (req, res, next) => {
   await logoutUser({ _id });
 
   res.status(204).end();
-  // res.status(200).json({ message: "User was logged out." });
 };
 
 const getCurrentUserController = async (req, res, next) => {
@@ -57,7 +56,7 @@ const changeSubscriptionController = async (req, res, next) => {
   );
 
   if (!changedUserSubscription) {
-    res.status(404).json({ message: "Not found" });
+    return res.status(404).json({ message: "Not found" });
   }
 
   res

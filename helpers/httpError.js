@@ -1,4 +1,4 @@
-class httpError extends Error {
+class HttpError extends Error {
     constructor(statusCode, message) {
         super();
         this.statusCode = statusCode;
@@ -13,7 +13,7 @@ class httpError extends Error {
 //     res.status(500).json({ message: err.message });
 // }
 
-module.exports = httpError;
+module.exports = HttpError;
 
 // module.exports = { httpError, errorHandler };
 

@@ -1,6 +1,5 @@
 const { Contact } = require("../models/contactModel");
 
-// const listContacts = async (owner) => {
 const listContacts = async (owner, skip, limit, favorite) => {
   const contacts = await Contact.find({ owner, favorite })
     .select({ __v: 0 })

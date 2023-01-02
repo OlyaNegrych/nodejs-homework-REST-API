@@ -9,7 +9,7 @@ const {
 
 const getContactsController = async (req, res, next) => {
   const { _id: owner } = req.user;
-  let { page = 1, limit = 10, favorite=null } = req.query;
+  let { page = 1, limit = 10, favorite } = req.query;
   limit = limit > 10 ? 10 : limit;
   const skip = (page - 1) * limit;
 
@@ -57,7 +57,7 @@ const updateContactController = async (req, res, next) => {
   const updatedContact = await updateContact(contactId, req.body, owner);
 
   if (!updatedContact) {
-    res.status(404).json({ message: "Not found" });
+    return res.status(404).json({ message: "Not found" });
   }
 
   res.status(200).json(updatedContact);
@@ -75,7 +75,7 @@ const changeStatusContactController = async (req, res, next) => {
   );
 
   if (!changedContactStatus) {
-    res.status(404).json({ message: "Not found" });
+    return res.status(404).json({ message: "Not found" });
   }
 
   res.status(200).json({ message: "The status was changed" });
