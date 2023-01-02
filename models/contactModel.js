@@ -15,6 +15,10 @@ const contactSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  owner: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "user",
+  },
 });
 
 const Contact = mongoose.model("Contacts", contactSchema);
@@ -22,4 +26,3 @@ const Contact = mongoose.model("Contacts", contactSchema);
 module.exports = {
     Contact
 }
-
