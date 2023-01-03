@@ -71,10 +71,24 @@ const changeUserSubscription = async (token, subscription) => {
   return { message: `User subscription type was changed on ${subscription}` };
 };
 
+const changeUserAvatar = async (token, subscription) => {
+  // const payload = jwt.verify(token, process.env.JWT_SECRET_KEY);
+  // const user = await User.findById({ _id: payload._id });
+
+  // if (!user || !token) {
+  //   throw new HttpError(401, "Unautorized");
+  // }
+
+  // await User.findOneAndUpdate({ _id: user._id }, { $set: { subscription } });
+
+  // return { message: `User subscription type was changed on ${subscription}` };
+};
+
 module.exports = {
   registerUser,
   loginUser,
   logoutUser,
   getCurrentUser,
   changeUserSubscription,
+  changeUserAvatar,
 };

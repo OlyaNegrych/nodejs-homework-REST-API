@@ -4,6 +4,7 @@ const {
   logoutUser,
   getCurrentUser,
   changeUserSubscription,
+  changeUserAvatar,
 } = require("../services/userServices");
 
 const registrationController = async (req, res, next) => {
@@ -64,10 +65,31 @@ const changeSubscriptionController = async (req, res, next) => {
     .json({ message: `User subscription type was changed to ${subscription}` });
 };
 
+const changeAvatarController = async (req, res, next) => {
+  // const token = req.headers.authorization?.split(" ")[1];
+
+  // if (!token) {
+  //   throw new httpError(401, "Unautorized");
+  // }
+
+  // const { subscription } = req.body;
+
+  // const changedUserSubscription = await changeUserAvatar(token, subscription);
+
+  // if (!changedUserSubscription) {
+  //   return res.status(404).json({ message: "Not found" });
+  // }
+
+  // res
+  //   .status(200)
+  //   .json({ message: `User subscription type was changed to ${subscription}` });
+};
+
 module.exports = {
   registrationController,
   loginController,
   logoutController,
   getCurrentUserController,
   changeSubscriptionController,
+  changeAvatarController,
 };

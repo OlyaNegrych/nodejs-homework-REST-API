@@ -6,6 +6,7 @@ const {
   registrationValidation,
   loginValidation,
   changeSubscriptionValidation,
+  changeAvatarValidation,
 } = require("../../middlewares/validation");
 
 const {
@@ -14,6 +15,7 @@ const {
   logoutController,
   getCurrentUserController,
   changeSubscriptionController,
+  changeAvatarController,
 } = require("../../controllers/usersControllers");
 
 router.post(
@@ -28,6 +30,11 @@ router.patch(
   "/current",
   changeSubscriptionValidation,
   asyncWrapper(changeSubscriptionController)
+);
+router.patch(
+  "/avatar",
+  changeAvatarValidation,
+  asyncWrapper(changeAvatarController)
 );
 
 module.exports = router;
