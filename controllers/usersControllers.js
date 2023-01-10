@@ -1,5 +1,4 @@
 const gravatar = require("gravatar");
-// const fs = require("fs").promises;
 
 const {
   registerUser,
@@ -86,7 +85,7 @@ const changeAvatarController = async (req, res, next) => {
     path,
     req.body.avatarURL
   );
-  
+
   if (!changedUserAvatar) {
     return res.status(404).json({ message: "Not found" });
   }
