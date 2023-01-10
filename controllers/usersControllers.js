@@ -1,5 +1,5 @@
 const gravatar = require("gravatar");
-const fs = require("fs").promises;
+// const fs = require("fs").promises;
 
 const {
   registerUser,
@@ -69,18 +69,29 @@ const changeSubscriptionController = async (req, res, next) => {
 };
 
 const changeAvatarController = async (req, res, next) => {
-  // const token = req.headers.authorization?.split(" ")[1];
-  // if (!token) {
-  //   throw new httpError(401, "Unautorized");
-  // }
-  // const { subscription } = req.body;
-  // const changedUserSubscription = await changeUserAvatar(token, subscription);
-  // if (!changedUserSubscription) {
-  //   return res.status(404).json({ message: "Not found" });
-  // }
-  // res
-  //   .status(200)
-  //   .json({ message: `User subscription type was changed to ${subscription}` });
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    throw new httpError(401, "Unautorized");
+  }
+
+  // const { avatarURL } = req.body; => undefined ????
+  req.body.avatarURL = gravatar.url(req.body.email);
+
+  const { originalname, path } = req.file;
+
+  const changedUserAvatar = await changeUserAvatar(
+    token,
+    originalname,
+    path,
+    req.body.avatarURL
+  );
+  
+  if (!changedUserAvatar) {
+    return res.status(404).json({ message: "Not found" });
+  }
+
+  res.status(200).json({ message: "User avatar was changed." });
 };
 
 module.exports = {

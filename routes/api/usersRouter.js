@@ -6,8 +6,8 @@ const {
   registrationValidation,
   loginValidation,
   changeSubscriptionValidation,
-  changeAvatarValidation,
 } = require("../../middlewares/validation");
+const uploadMiddleware = require('../../middlewares/avatarMiddleware');
 
 const {
   registrationController,
@@ -32,8 +32,8 @@ router.patch(
   asyncWrapper(changeSubscriptionController)
 );
 router.patch(
-  "/avatar",
-  changeAvatarValidation,
+  "/avatars",
+  uploadMiddleware.single("avatar"),
   asyncWrapper(changeAvatarController)
 );
 
