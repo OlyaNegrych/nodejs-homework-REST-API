@@ -34,13 +34,13 @@ const loginUser = async ({ email, password }) => {
     { expiresIn: "1d" }
   );
 
-  await User.findByIdAndUpdate(candidate._id , { $set: { token } });
+  await User.findByIdAndUpdate(candidate._id, { $set: { token } });
 
   return token;
 };
 
-const logoutUser = async ({ _id }) => {
-  await User.findByIdAndUpdate({ _id }, { $set: { token: null } });
+const logoutUser = async (_id) => {
+  await User.findByIdAndUpdate(_id, { $set: { token: null } });
 
   return { message: "The user was logged out" };
 };
@@ -71,17 +71,10 @@ const changeUserSubscription = async (token, subscription) => {
   return { message: `User subscription type was changed on ${subscription}` };
 };
 
-const changeUserAvatar = async (token, subscription) => {
-  // const payload = jwt.verify(token, process.env.JWT_SECRET_KEY);
-  // const user = await User.findById({ _id: payload._id });
+const changeUserAvatar = async (userId, avatarURL) => {
+  await User.findOneAndUpdate({ _id: userId }, { $set: { avatarURL } });
 
-  // if (!user || !token) {
-  //   throw new HttpError(401, "Unautorized");
-  // }
-
-  // await User.findOneAndUpdate({ _id: user._id }, { $set: { subscription } });
-
-  // return { message: `User subscription type was changed on ${subscription}` };
+  return { message: "User avatar was changed." };
 };
 
 module.exports = {
