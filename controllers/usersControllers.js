@@ -77,12 +77,12 @@ const changeAvatarController = async (req, res, next) => {
   // const { avatarURL } = req.body; => undefined ????
   req.body.avatarURL = gravatar.url(req.body.email);
 
-  const { originalname, path } = req.file;
+  const { originalname, path: tempUpload } = req.file;
 
   const changedUserAvatar = await changeUserAvatar(
     token,
     originalname,
-    path,
+    tempUpload,
     req.body.avatarURL
   );
 

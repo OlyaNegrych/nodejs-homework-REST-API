@@ -1,6 +1,8 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const gravatar = require("gravatar");
+const path = require("path");
+const { uuid } = require("uuidv4");
 const HttpError = require("../helpers/httpError");
 const { User } = require("../models/userModel");
 const { replaceAvatar } = require("../helpers/avatarOptions");
@@ -80,7 +82,7 @@ const changeUserSubscription = async (token, subscription) => {
   return { message: `User subscription type was changed on ${subscription}` };
 };
 
-const changeUserAvatar = async (token, originalname, path, avatarURL) => {
+const changeUserAvatar = async (token, originalname, tempUpload, avatarURL) => {
   const payload = jwt.verify(token, process.env.JWT_SECRET_KEY);
   const user = await User.findById({ _id: payload._id });
 
@@ -88,13 +90,12 @@ const changeUserAvatar = async (token, originalname, path, avatarURL) => {
     throw new HttpError(401, "Unautorized");
   }
 
-  await User.findOneAndUpdate({ _id: user._id }, { $set: { avatarURL } });
+  const newAvatarURL = await replaceAvatar(originalname, tempUpload);
 
-  try {
-    await replaceAvatar(originalname, path, avatarURL);
-  } catch (error) {
-    console.log(error);
-  }
+  await User.findOneAndUpdate(
+    { _id: user._id },
+    { $set: { avatarURL: newAvatarURL } }
+  );
 
   return { message: "User avatar was changed." };
 };

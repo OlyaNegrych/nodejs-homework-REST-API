@@ -28,11 +28,13 @@ router.get("/logout", checkJWT, asyncWrapper(logoutController));
 router.get("/current", checkJWT, asyncWrapper(getCurrentUserController));
 router.patch(
   "/current",
+  checkJWT,
   changeSubscriptionValidation,
   asyncWrapper(changeSubscriptionController)
 );
 router.patch(
   "/avatars",
+  checkJWT,
   uploadMiddleware.single("avatar"),
   asyncWrapper(changeAvatarController)
 );

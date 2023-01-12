@@ -1,5 +1,9 @@
 const fs = require("fs").promises;
 const Jimp = require("jimp");
+const path = require('path');
+const { uuid } = require("uuidv4");
+
+const avatarsDir = path.join(__dirname, '../', 'public', 'avatars');
 
 const resizeAvatar = async (path) => Jimp.read(path)
   .then((img) => {
@@ -9,16 +13,21 @@ const resizeAvatar = async (path) => Jimp.read(path)
     console.error(err);
   });
 
-const replaceAvatar = async (originalname, path, avatarURL) => {
-  const [, extension] = originalname.split(".");
-  const avatarPathArray = avatarURL.split("/");
-  const avatarNewFile = `${
-    avatarPathArray[avatarPathArray.length - 1]
-        }.${extension}`;
-    
-  await resizeAvatar(path);
-  await fs.rename(path, `./public/avatars/${avatarNewFile}`);
-//   await fs.unlink(path);
+const replaceAvatar = async (originalname, tempUpload) => {
+
+  await resizeAvatar(tempUpload);
+
+  try {
+    const [, extension] = originalname.split(".");
+    const newName = `${uuid()}.${extension}`;
+    const resultUpload = path.join(avatarsDir, newName);
+    await fs.rename(tempUpload, resultUpload);
+    return resultUpload;
+
+  } catch (error) {
+    await fs.unlink(path);
+    throw error;
+  }
 };
 
 module.exports = {
