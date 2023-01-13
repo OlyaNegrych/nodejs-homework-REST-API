@@ -4,7 +4,6 @@ const gravatar = require("gravatar");
 const HttpError = require("../helpers/httpError");
 const { User } = require("../models/userModel");
 const { replaceAvatar } = require("../helpers/avatarOptions");
-// const path = require("path");
 
 const registerUser = async (email, password) => {
   const candidate = await User.findOne({ email });
@@ -90,8 +89,6 @@ const changeUserAvatar = async (token, originalname, tempUpload, avatarURL) => {
   }
 
   const newAvatarURL = await replaceAvatar(originalname, tempUpload);
-  // const resultUpload = await replaceAvatar(originalname, tempUpload);
-  // const newAvatarURL = path.join("avatars", resultUpload);
 
   await User.findOneAndUpdate(
     { _id: user._id },
