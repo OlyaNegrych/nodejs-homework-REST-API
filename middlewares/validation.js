@@ -59,5 +59,5 @@ module.exports = {
   changeStatusValidation,
   registrationValidation,
   loginValidation,
-  changeSubscriptionValidation
+  changeSubscriptionValidation,
 };
