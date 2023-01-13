@@ -1,11 +1,10 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const gravatar = require("gravatar");
-const path = require("path");
-const { uuid } = require("uuidv4");
 const HttpError = require("../helpers/httpError");
 const { User } = require("../models/userModel");
 const { replaceAvatar } = require("../helpers/avatarOptions");
+// const path = require("path");
 
 const registerUser = async (email, password) => {
   const candidate = await User.findOne({ email });
@@ -43,7 +42,7 @@ const loginUser = async ({ email, password }) => {
     { _id: candidate._id, email: candidate.email },
     process.env.JWT_SECRET_KEY,
     { expiresIn: "1d" }
-  );
+  ); 
 
   await User.findByIdAndUpdate(candidate._id, { $set: { token } });
 
@@ -91,6 +90,8 @@ const changeUserAvatar = async (token, originalname, tempUpload, avatarURL) => {
   }
 
   const newAvatarURL = await replaceAvatar(originalname, tempUpload);
+  // const resultUpload = await replaceAvatar(originalname, tempUpload);
+  // const newAvatarURL = path.join("avatars", resultUpload);
 
   await User.findOneAndUpdate(
     { _id: user._id },

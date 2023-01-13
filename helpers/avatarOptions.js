@@ -23,7 +23,6 @@ const replaceAvatar = async (originalname, tempUpload) => {
     const resultUpload = path.join(avatarsDir, newName);
     await fs.rename(tempUpload, resultUpload);
     return resultUpload;
-
   } catch (error) {
     await fs.unlink(path);
     throw error;

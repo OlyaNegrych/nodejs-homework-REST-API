@@ -18,11 +18,11 @@ const registrationController = async (req, res, next) => {
 };
 
 const loginController = async (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password, subscription } = req.body;
 
   const token = await loginUser({ email, password });
 
-  res.status(200).json({ token });
+  res.status(200).json({ user: { email, subscription }, token });
 };
 
 const logoutController = async (req, res, next) => {
@@ -74,7 +74,7 @@ const changeAvatarController = async (req, res, next) => {
     throw new httpError(401, "Unautorized");
   }
 
-  // const { avatarURL } = req.body; => undefined ????
+  // const { avatarURL } = req.body; ====> undefined ????
   req.body.avatarURL = gravatar.url(req.body.email);
 
   const { originalname, path: tempUpload } = req.file;
