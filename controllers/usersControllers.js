@@ -74,8 +74,7 @@ const changeAvatarController = async (req, res, next) => {
     throw new httpError(401, "Unautorized");
   }
 
-  // const { avatarURL } = req.body; ====> undefined ????
-  req.body.avatarURL = gravatar.url(req.body.email);
+  const avatarURL = gravatar.url(req.body.email);
 
   const { originalname, path: tempUpload } = req.file;
 
@@ -83,7 +82,7 @@ const changeAvatarController = async (req, res, next) => {
     token,
     originalname,
     tempUpload,
-    req.body.avatarURL
+    avatarURL
   );
 
   if (!changedUserAvatar) {

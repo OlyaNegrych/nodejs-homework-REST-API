@@ -4,7 +4,6 @@ const ChangeStatusSchema = require('../utils/validation/contactsValidation/chang
 const RegisterUserSchema = require("../utils/validation/authValidation/registerValidationSchema");
 const LoginUserSchema = require("../utils/validation/authValidation/loginValidationSchema");
 const SubscriptionSchema = require("../utils/validation/authValidation/subscriptionValidationSchema");
-const AvatarSchema = require("../utils/validation/authValidation/avatarValidationSchema");
 
 const addContactValidation = (req, res, next) => {
   const validationResult = AddContactSchema.validate(req.body);
@@ -54,15 +53,6 @@ const changeSubscriptionValidation = (req, res, next) => {
   next();
 };
 
-const changeAvatarValidation = (req, res, next) => {
-  const validationResult = AvatarSchema.validate(req.body);
-  if (validationResult.error) {
-    return res.status(400).json(validationResult.error.details);
-  }
-  next();
-};
-;
-
 module.exports = {
   addContactValidation,
   updateContactValidation,
@@ -70,5 +60,4 @@ module.exports = {
   registrationValidation,
   loginValidation,
   changeSubscriptionValidation,
-  changeAvatarValidation,
 };
