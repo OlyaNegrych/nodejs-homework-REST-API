@@ -4,6 +4,7 @@ const ChangeStatusSchema = require('../utils/validation/contactsValidation/chang
 const RegisterUserSchema = require("../utils/validation/authValidation/registerValidationSchema");
 const LoginUserSchema = require("../utils/validation/authValidation/loginValidationSchema");
 const SubscriptionSchema = require("../utils/validation/authValidation/subscriptionValidationSchema");
+const VerifyEmailSchema = require("../utils/validation/authValidation/verifyValidationSchema");
 
 const addContactValidation = (req, res, next) => {
   const validationResult = AddContactSchema.validate(req.body);
@@ -53,6 +54,14 @@ const changeSubscriptionValidation = (req, res, next) => {
   next();
 };
 
+const verifyEmailValidation = (req, res, next) => {
+  const validationResult = VerifyEmailSchema.validate(req.body);
+  if (validationResult.error) {
+    return res.status(400).json(validationResult.error.details);
+  }
+  next();
+};
+
 module.exports = {
   addContactValidation,
   updateContactValidation,
@@ -60,4 +69,5 @@ module.exports = {
   registrationValidation,
   loginValidation,
   changeSubscriptionValidation,
+  verifyEmailValidation,
 };
