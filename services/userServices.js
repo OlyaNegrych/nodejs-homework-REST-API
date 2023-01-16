@@ -41,7 +41,7 @@ const registerUser = async (email, password) => {
 };
 
 const loginUser = async ({ email, password }) => {
-  const candidate = await User.findOne({ email });
+  const candidate = await User.findOne({ email, verify: true });
   const isPasswordCorrect = await bcrypt.compare(password, candidate.password);
 
   if (!candidate || !isPasswordCorrect) {
@@ -116,7 +116,7 @@ const changeUserAvatar = async (token, originalname, tempUpload, avatarURL) => {
 const verification = async ({ verificationToken }) => {
   const user = await User.findOne({
     verificationToken,
-    // verify: false
+    verify: false
   });
 
   if (!user) {

@@ -8,7 +8,7 @@ const sendMail = async (email, verificationToken) => {
     from: "olyanegrych@gmail.com",
     subject: "Thank you for the registration",
     text: `Please, confirm your email address http://localhost:3000/users/verify/${verificationToken}`,
-    html: `Please, confirm your <a href="http://localhost:3000/users/verify/${verificationToken}">email</a> address`,
+    html: `Please, <a href="http://localhost:3000/users/verify/${verificationToken}">confirm</a> your email address`,
   };
 
   await sgMail
