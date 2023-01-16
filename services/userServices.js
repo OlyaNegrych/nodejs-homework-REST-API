@@ -49,7 +49,7 @@ const loginUser = async ({ email, password }) => {
   }
 
   if (!candidate.verify) {
-    throw new HttpError(401, "User is not verified!");
+    throw new HttpError(400, "User is not verified!");
   }
 
   const token = jwt.sign(
@@ -120,11 +120,11 @@ const verification = async ({ verificationToken }) => {
   });
 
   if (!user) {
-    return { message: "Not found" };
+    throw new HttpError(404, "Not found");
   }
 
   user.verificationToken = null;
-  user.verify = true;
+  user.verify = true; 
 
   await user.save();
 
@@ -133,8 +133,9 @@ const verification = async ({ verificationToken }) => {
 
 const resendVerification = async ({ email }) => {
   const user = await User.findOne({ email });
+
   if (!user) {
-    throw new HttpError(400, "User not found");
+    throw new HttpError(404, "User not found!");
   }
 
   if (user.verify) {
