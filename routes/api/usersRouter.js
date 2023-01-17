@@ -6,6 +6,7 @@ const {
   registrationValidation,
   loginValidation,
   changeSubscriptionValidation,
+  verifyEmailValidation,
 } = require("../../middlewares/validation");
 const uploadMiddleware = require('../../middlewares/avatarMiddleware');
 
@@ -16,6 +17,8 @@ const {
   getCurrentUserController,
   changeSubscriptionController,
   changeAvatarController,
+  verificationController,
+  resendVerificationController,
 } = require("../../controllers/usersControllers");
 
 router.post(
@@ -37,6 +40,12 @@ router.patch(
   checkJWT,
   uploadMiddleware.single("avatar"),
   asyncWrapper(changeAvatarController)
+);
+router.get("/verify/:verificationToken", asyncWrapper(verificationController));
+router.post(
+  "/verify",
+  verifyEmailValidation,
+  asyncWrapper(resendVerificationController)
 );
 
 module.exports = router;
